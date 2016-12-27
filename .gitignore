@@ -1,0 +1,12 @@
+# VSCODE
+.vscode/*
+.vscode/*.json
+
+ping_pong
+*.out
+*.sdf
+.vs/*
+x64/*
+Debug/*
+Release/*
+*sdl_utils*
