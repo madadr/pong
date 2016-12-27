@@ -6,15 +6,17 @@ Ball::Ball(SDL_Window* window, SDL_Renderer* renderer, int x, int y, int size)
     renderer_ptr(renderer),
 	rect({x, y, size, size}),
     dx(1), dy(0),
-    init_x(x), init_y(y)
+    init_x(x), init_y(y),
+    x(rect.x), y(rect.y),
+    w(rect.w), h(rect.h)
 {
     
 }
 
 void Ball::reset()
 {
-    rect.x = init_x;
-    rect.y = init_y;
+    x = init_x;
+    y = init_y;
 }
 
 void Ball::render()

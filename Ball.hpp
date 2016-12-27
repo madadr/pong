@@ -23,6 +23,10 @@ private:
     SDL_Renderer* renderer_ptr;
     int init_x;
     int init_y;
+    int& x;
+    int& y;
+    int& w;
+    int& h;
     double dx;
     double dy;
 public:

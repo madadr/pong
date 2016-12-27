@@ -21,6 +21,10 @@ private:
     SDL_Rect rect;
     SDL_Window* window_ptr;
     SDL_Renderer* renderer_ptr;
+    int& x;
+    int& y;
+    int& w;
+    int& h;
 public:
     explicit Racket(SDL_Window* window, SDL_Renderer* renderer, int x, int y, int width, int height);
     ~Racket() = default;
