@@ -21,8 +21,8 @@ private:
     SDL_Rect rect;
     SDL_Window* window_ptr;
     SDL_Renderer* renderer_ptr;
-    int init_x;
-    int init_y;
+    const int init_x;
+    const int init_y;
     int& x;
     int& y;
     int& w;

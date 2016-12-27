@@ -6,7 +6,7 @@ Racket::Racket(SDL_Window* window, SDL_Renderer* renderer, int x, int y, int wid
     renderer_ptr(renderer),
 	rect({x, y, width, height}),
     x(rect.x), y(rect.y),
-    w(rect.w), h(h)
+    w(rect.w), h(rect.h)
 {
     
 }
