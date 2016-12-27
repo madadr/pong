@@ -19,6 +19,6 @@ void Ball::reset()
 
 void Ball::render()
 {
-	SDL_SetRenderDrawColor( renderer_ptr, 0xFF, 0xA5, 0x00, 0xFF );		
+	SDL_SetRenderDrawColor( renderer_ptr, 0xFF, 0x52, 0x47, 0xFF );	
 	SDL_RenderFillRect( renderer_ptr, &rect );
 }

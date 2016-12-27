@@ -112,12 +112,16 @@ void GameWindow::event_handler()
 		{
 			switch (event.key.keysym.sym)
 			{
-			case SDLK_UP:
+			case SDLK_a:
 				racket1->up();
+				break;
+			case SDLK_z:
+				racket1->down();
+				break;
+			case SDLK_UP:
 				racket2->up();
 				break;
 			case SDLK_DOWN:
-				racket1->down();
 				racket2->down();
 				break;
 			default:
@@ -135,13 +139,13 @@ void GameWindow::delay(int ms)
 
 void GameWindow::move_ball()
 {
-	int rbm_width = racket1->rect.w + ball->rect.w + margin; // racket, ball and margin width
+	int rbm_width = racket2->rect.w + ball->rect.w + margin; // racket, ball and margin width
 	if(ball->dx > 0)
 	{
 		if(ball->rect.x < width - rbm_width - 1)
 			++ball->rect.x;
 		else if(ball->rect.x >= width - rbm_width - 1)
-		{	if(ball->rect.y >= racket1->rect.y && ball->rect.y <= racket1->rect.y + racket1->rect.h)
+		{	if(ball->rect.y >= racket2->rect.y && ball->rect.y <= racket2->rect.y + racket2->rect.h)
 				ball->dx = -1;
 			else
 			{
@@ -149,6 +153,7 @@ void GameWindow::move_ball()
 				{	
 					++ball->rect.x;
 					render_objects();
+					event_handler();	// avoids rackets freeze
 				}
 				ball->reset();
 			}
@@ -156,9 +161,21 @@ void GameWindow::move_ball()
 	}
 	else if(ball->dx < 0)
 	{
-		if(ball->rect.x >= rbm_width - ball->rect.w)
+		if(ball->rect.x > rbm_width - ball->rect.w)
 			--ball->rect.x;
-		else
-			ball->dx = 1;
+		else if(ball->rect.x <= rbm_width - ball->rect.w)
+		{	if(ball->rect.y >= racket1->rect.y && ball->rect.y <= racket1->rect.y + racket1->rect.h)
+				ball->dx = 1;
+			else
+			{
+				while(ball->rect.x >= -ball->rect.w)
+				{	
+					--ball->rect.x;
+					render_objects();
+					event_handler();	// avoids rackets freeze
+				}
+				ball->reset();
+			}
+		}
 	}
 }
