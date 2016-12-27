@@ -4,7 +4,6 @@
 
 ping_pong
 *.out
-*.sdf
 .vs/*
 x64/*
 Debug/*

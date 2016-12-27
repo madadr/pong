@@ -25,11 +25,8 @@ private:
 	Racket* racket1;
 	Racket* racket2;
 	void init();
-	// void racket_up(SDL_Rect& racket);
-	// void racket_down(SDL_Rect& racket);
-	// void racket_render(SDL_Rect& racket);
 public:
-	GameWindow(int w, int h);
+	explicit GameWindow(int w, int h);
 	~GameWindow();
 	GameWindow(const GameWindow&) = delete;
 	GameWindow(GameWindow&&) = delete;

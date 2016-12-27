@@ -9,8 +9,14 @@ GameWindow::GameWindow(int w, int h)
 	racket2(nullptr)
 {
 	init();
-	racket1 = new Racket(window, renderer, width - width/10, height/2, width/25, height/5);
-	racket2 = new Racket(window, renderer, width/10, height/2, width/25, height/5);
+	int margin = 20;
+	int racket_width = width/25;
+	int racket_height = height/5;
+	int racket1_x = width - racket_width - margin + 1;
+	int racket2_x = margin - 1;
+	int racket_y = height/2;
+	racket1 = new Racket(window, renderer, racket1_x, racket_y, racket_width, racket_height);
+	racket2 = new Racket(window, renderer, racket2_x, racket_y, racket_width, racket_height);
 }
 
 GameWindow::~GameWindow()
@@ -82,8 +88,8 @@ void GameWindow::play()
 					racket1->down();
 					racket2->down();
 					break;
-				// default:
-					// break;
+				default:
+					break;
 				}
 			}
 			//Clear screen
@@ -93,33 +99,8 @@ void GameWindow::play()
 			racket1->render();
 			racket2->render();
 
-			//Render red filled quad
-			// SDL_Rect fillRect = { width / 6, height / 6, width / 10, height / 2 };
-			// SDL_SetRenderDrawColor( renderer, 0x00, 0x00, 0x00, 0xFF );		
-			// SDL_RenderFillRect( renderer, fillRect );
-
 			//Update screen
 			SDL_RenderPresent( renderer );
 		}
 	}
 }
-/*
-void GameWindow::racket_up(SDL_Rect& racket)
-{
-	int step = 5;
-	if(racket.y - step >= 0)
-		racket.y -= step;
-}
-
-void GameWindow::racket_down(SDL_Rect& racket)
-{
-	int step = 5;
-	if(racket.y + racket.h + step <= height)
-		racket.y += step;
-}
-
-void GameWindow::racket_render(SDL_Rect& racket)
-{
-	SDL_SetRenderDrawColor( renderer, 0xFF, 0xFF, 0xFF, 0xFF );		
-	SDL_RenderFillRect( renderer, &racket );
-}*/

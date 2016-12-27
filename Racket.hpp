@@ -20,7 +20,13 @@ private:
     SDL_Window* window_ptr;
     SDL_Renderer* renderer_ptr;
 public:
-    Racket(SDL_Window* window, SDL_Renderer* renderer, int x, int y, int width, int height);
+    explicit Racket(SDL_Window* window, SDL_Renderer* renderer, int x, int y, int width, int height);
+    ~Racket() = default;
+	Racket(const Racket&) = delete;
+	Racket(Racket&&) = delete;
+	Racket& operator=(const Racket&) = delete;
+	Racket& operator=(Racket&&) = delete;
+    // object control methods
 	void up();
 	void down();
 	void render();
