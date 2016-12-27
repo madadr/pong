@@ -1,5 +1,5 @@
 #OBJS specifies which files to compile as part of the project 
-OBJS = GameWindow.hpp GameWindow.cpp Racket.hpp Racket.cpp main.cpp 
+OBJS = GameWindow.hpp GameWindow.cpp Racket.hpp Racket.cpp Ball.hpp Ball.cpp main.cpp 
 
 #CC specifies which compiler we're using 
 CC = g++

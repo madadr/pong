@@ -12,7 +12,13 @@
 #endif
 
 #include <iostream>
+#include <thread>
+#include <chrono>
 #include "Racket.hpp"
+#include "Ball.hpp"
+
+class Racket;
+class Ball;
 
 class GameWindow
 {
@@ -21,9 +27,12 @@ private:
 	SDL_Renderer* renderer;
 	int width;
 	int height;
+	int margin;
+	bool quit;
 	SDL_Event event;
 	Racket* racket1;
 	Racket* racket2;
+	Ball* ball;
 	void init();
 public:
 	explicit GameWindow(int w, int h);
@@ -35,6 +44,11 @@ public:
 	friend class RectObject;
 
 	void play();
+private:
+	void render_objects();
+	void event_handler();
+	void delay(int ms);
+	void move_ball();
 };
 
 #endif

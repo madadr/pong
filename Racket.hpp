@@ -12,9 +12,11 @@
 #endif
 
 #include <iostream>
+#include "GameWindow.hpp"
 
 class Racket
 {
+    friend class GameWindow;
 private:
     SDL_Rect rect;
     SDL_Window* window_ptr;
