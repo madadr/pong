@@ -99,7 +99,7 @@ void GameWindow::render_objects()
 	//Update screen
 	SDL_RenderPresent( renderer );
 
-	SDL_Delay(5);
+	// SDL_Delay(10);
 }
 
 void GameWindow::event_handler()
@@ -134,24 +134,38 @@ void GameWindow::event_handler()
 
 void GameWindow::delay(int ms)
 {
-		std::this_thread::sleep_for(std::chrono::milliseconds(ms));
+	std::this_thread::sleep_for(std::chrono::milliseconds(ms));
 }
 
 void GameWindow::move_ball()
 {
+	// collision with wall
+	if (ball->y < 0 || (ball->y + ball->h) > height)
+	{
+		ball->dy *= -1;
+	}
+
 	int rbm_width = racket2->w + ball->w + margin; // racket, ball and margin width
 	if(ball->dx > 0)
 	{
 		if(ball->x < width - rbm_width - 1)
-			++ball->x;
+		{	
+			ball->move();
+		}
 		else if(ball->x >= width - rbm_width - 1)
-		{	if(ball->y >= racket2->y && ball->y <= racket2->y + racket2->h)
-				ball->dx = -1;
-			else
+		{	
+			// collision with racket
+			if(ball->y >= racket2->y && ball->y <= racket2->y + racket2->h)
+			{	
+				// ball->dy = -(ball->dx/20) * (racket2->x - ball->x);
+				ball->dy = -(ball->dx/20) * (racket2->x - ball->x);
+				ball->dx *= -1;
+			}
+			else	// racket didn't "bounce" ball
 			{
 				while(ball->x < width + ball->w)
 				{	
-					++ball->x;
+					ball->move();
 					render_objects();
 					event_handler();	// avoids rackets freeze (when action)
 				}
@@ -162,15 +176,23 @@ void GameWindow::move_ball()
 	else if(ball->dx < 0)
 	{
 		if(ball->x > rbm_width - ball->w)
-			--ball->x;
+		{			
+			ball->move();
+		}
 		else if(ball->x <= rbm_width - ball->w)
-		{	if(ball->y >= racket1->rect.y && ball->y <= racket1->rect.y + racket1->rect.h)
-				ball->dx = 1;
-			else
+		{	
+			// collision with racket
+			if(ball->y >= racket1->rect.y && ball->y <= racket1->rect.y + racket1->rect.h)
+			{	
+				ball->dy = -(ball->dx/20) * (racket1->x - ball->x);
+				// ball->dy = -(ball->dx/20) * (racket1->x + ball->x);
+				ball->dx *= -1;
+			}
+			else // racket didn't "bounce" ball
 			{
 				while(ball->x >= -ball->w)
 				{	
-					--ball->x;
+					ball->move();
 					render_objects();
 					event_handler();	// avoids rackets freeze (when action)
 				}

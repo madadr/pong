@@ -37,6 +37,7 @@ public:
 	Ball& operator=(const Ball&) = delete;
 	Ball& operator=(Ball&&) = delete;
     // object control methods
+    void move();
 	void render();
     void reset();
 };
