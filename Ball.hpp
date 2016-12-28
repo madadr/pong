@@ -13,6 +13,7 @@
 
 #include <iostream>
 #include "GameWindow.hpp"
+#include <cmath>
 
 class Ball
 {
@@ -23,12 +24,8 @@ private:
     SDL_Renderer* renderer_ptr;
     const int init_x;
     const int init_y;
-    int& x;
-    int& y;
-    int& w;
-    int& h;
-    double dx;
-    double dy;
+    int &x, &y, &w, &h;
+    double dx, dy;
 public:
     explicit Ball(SDL_Window* window, SDL_Renderer* renderer, int x, int y, int size);
     ~Ball() = default;

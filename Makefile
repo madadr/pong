@@ -1,5 +1,5 @@
 #OBJS specifies which files to compile as part of the project 
-OBJS = GameWindow.hpp GameWindow.cpp Racket.hpp Racket.cpp Ball.hpp Ball.cpp main.cpp 
+OBJS = GameWindow.hpp GameWindow.cpp Racket.hpp Racket.cpp Ball.hpp Ball.cpp Scoreboard.hpp Scoreboard.cpp main.cpp 
 
 #CC specifies which compiler we're using 
 CC = g++
@@ -8,7 +8,7 @@ CC = g++
 COMPILER_FLAGS = -g -pedantic
 
 #LINKER_FLAGS specifies the libraries we're linking against 
-LINKER_FLAGS = -lSDL2 -std=c++1y
+LINKER_FLAGS = -lSDL2 -lSDL2_ttf -std=c++1y
 
 #OBJ_NAME specifies the name of our exectuable 
 OBJ_NAME = ping_pong 

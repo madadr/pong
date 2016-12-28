@@ -14,8 +14,10 @@
 #include <iostream>
 #include <thread>
 #include <chrono>
+#include <random>
 #include "Racket.hpp"
 #include "Ball.hpp"
+#include "Scoreboard.hpp"
 
 class Racket;
 class Ball;
@@ -33,7 +35,7 @@ private:
 	Racket* racket1;
 	Racket* racket2;
 	Ball* ball;
-	void init();
+	Scoreboard* scoreboard;
 public:
 	explicit GameWindow(int w, int h);
 	~GameWindow();
@@ -45,10 +47,13 @@ public:
 
 	void play();
 private:
+	void init();
+	void render_background();
 	void render_objects();
 	void event_handler();
-	void delay();
+	void delay() const;
 	void move_ball();
+	int random_number(const int& number) const;
 };
 
 #endif
