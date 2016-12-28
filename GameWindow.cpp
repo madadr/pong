@@ -82,6 +82,7 @@ void GameWindow::play()
 		event_handler();
 		move_ball();
 		render_objects();
+		delay();
 	}
 }
 
@@ -91,6 +92,11 @@ void GameWindow::render_objects()
 	SDL_SetRenderDrawColor( renderer, 0x00, 0x00, 0x00, 0xFF );
 	SDL_RenderClear( renderer );
 
+	// line in the middle
+	SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+	for (int i = 0; i < height; i += 5)
+		SDL_RenderDrawPoint(renderer, width / 2, i);
+
 	// Render objects
 	ball->render();
 	racket1->render();
@@ -98,8 +104,6 @@ void GameWindow::render_objects()
 
 	//Update screen
 	SDL_RenderPresent( renderer );
-
-	// SDL_Delay(10);
 }
 
 void GameWindow::event_handler()
@@ -132,9 +136,9 @@ void GameWindow::event_handler()
 	}
 }
 
-void GameWindow::delay(int ms)
+void GameWindow::delay()
 {
-	std::this_thread::sleep_for(std::chrono::milliseconds(ms));
+	std::this_thread::sleep_for(std::chrono::milliseconds(10));
 }
 
 void GameWindow::move_ball()
@@ -142,7 +146,7 @@ void GameWindow::move_ball()
 	// collision with wall
 	if (ball->y < 0 || (ball->y + ball->h) > height)
 	{
-		ball->dy *= -1;
+		ball->dy *= -1.;
 	}
 
 	int rbm_width = racket2->w + ball->w + margin; // racket, ball and margin width
@@ -158,8 +162,8 @@ void GameWindow::move_ball()
 			if(ball->y >= racket2->y && ball->y <= racket2->y + racket2->h)
 			{	
 				// ball->dy = -(ball->dx/20) * (racket2->x - ball->x);
-				ball->dy = -(ball->dx/20) * (racket2->x - ball->x);
-				ball->dx *= -1;
+				ball->dy = -(ball->dx/60) * (racket2->y + racket2->h/2 - ball->y - ball->h / 2);
+				ball->dx *= -1.;
 			}
 			else	// racket didn't "bounce" ball
 			{
@@ -167,6 +171,7 @@ void GameWindow::move_ball()
 				{	
 					ball->move();
 					render_objects();
+					delay();
 					event_handler();	// avoids rackets freeze (when action)
 				}
 				ball->reset();
@@ -184,7 +189,7 @@ void GameWindow::move_ball()
 			// collision with racket
 			if(ball->y >= racket1->rect.y && ball->y <= racket1->rect.y + racket1->rect.h)
 			{	
-				ball->dy = -(ball->dx/20) * (racket1->x - ball->x);
+				ball->dy = -(ball->dx/60) * (racket1->y + racket1->h / 2 - ball->y - ball->h/2);
 				// ball->dy = -(ball->dx/20) * (racket1->x + ball->x);
 				ball->dx *= -1;
 			}
@@ -194,6 +199,7 @@ void GameWindow::move_ball()
 				{	
 					ball->move();
 					render_objects();
+					delay();
 					event_handler();	// avoids rackets freeze (when action)
 				}
 				ball->reset();

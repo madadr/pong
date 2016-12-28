@@ -13,7 +13,7 @@ Racket::Racket(SDL_Window* window, SDL_Renderer* renderer, int x, int y, int wid
 
 void Racket::up()
 {
-	int step = 20;
+	int step = 40;
 	if(y - step >= 0)
 		y -= step;
 }
@@ -22,7 +22,7 @@ void Racket::down()
 {
 	int window_height;
 	SDL_GetWindowSize(window_ptr, nullptr, &window_height);
-	int step = 20;
+	int step = 40;
 	if(y + h + step <= window_height)
 		y += step;
 }

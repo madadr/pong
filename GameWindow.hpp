@@ -47,7 +47,7 @@ public:
 private:
 	void render_objects();
 	void event_handler();
-	void delay(int ms);
+	void delay();
 	void move_ball();
 };
 
