@@ -1,11 +1,11 @@
 #include "Scoreboard.hpp"
 
-Scoreboard::Scoreboard(SDL_Renderer* renderer, int x, int y)
-	: renderer_ptr(renderer), 
-	x1(x-120), x2(x+100), 
-	y1(y), y2(y),
-	score1(0), score2(0),
-	font(nullptr)
+Scoreboard::Scoreboard(SDL_Renderer* renderer, const int& x, const int& y)
+	: renderer_ptr(renderer),
+	  x1(x - 120), x2(x + 100), // TODO: make x1, x2 dependent of GameWindow object
+	  y1(y), y2(y),
+	  score1(0), score2(0),
+	  font(nullptr)
 {
 	if (TTF_Init() == -1)
 	{
@@ -13,10 +13,10 @@ Scoreboard::Scoreboard(SDL_Renderer* renderer, int x, int y)
 		exit(EXIT_FAILURE); // TODO: Throw exception
 	}
 
-	font = TTF_OpenFont("subway_ticker.ttf", 50);
-	if (font == nullptr) 
+	font = TTF_OpenFont("font.ttf", 50);
+	if (font == nullptr)
 	{
-		std::cerr << "Font not fount. " << std::endl;
+		std::cerr << "Font not found." << std::endl;
 		exit(EXIT_FAILURE); // TODO: Throw exception
 	}
 	update1();
@@ -46,7 +46,7 @@ void Scoreboard::render()
 	SDL_SetRenderDrawColor(renderer_ptr, 0xFF, 0x00, 0xFF, 0xFF);
 	SDL_RenderCopy(renderer_ptr, text1_texture, nullptr, &text1_rect);
 	SDL_RenderCopy(renderer_ptr, text2_texture, nullptr, &text2_rect);
-//	SDL_RenderPresent(renderer_ptr);
+	//	SDL_RenderPresent(renderer_ptr);
 }
 
 int& Scoreboard::operator[](const int& index)
@@ -64,13 +64,13 @@ int& Scoreboard::operator[](const int& index)
 void Scoreboard::update(const int& score, const int& x, const int& y, SDL_Rect* text_rect, SDL_Texture** text_texture)
 {
 	// destroy old texture
-//	SDL_DestroyTexture(*text_texture);
-//	text_texture = nullptr;
+	SDL_DestroyTexture(*text_texture);
+	text_texture = nullptr;
 
 	int text_width;
 	int text_height;
-	SDL_Surface *surface;
-	SDL_Color textColor = { 255, 255, 255, 0 };
+	SDL_Surface* surface;
+	SDL_Color textColor = {255, 255, 255, 0};
 
 	surface = TTF_RenderText_Solid(font, std::to_string(score).c_str(), textColor);
 	*text_texture = SDL_CreateTextureFromSurface(renderer_ptr, surface);

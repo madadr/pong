@@ -1,21 +1,19 @@
 #include "Ball.hpp"
 
 
-Ball::Ball(SDL_Window* window, SDL_Renderer* renderer, int x, int y, int size)
-    : window_ptr(window),
-    renderer_ptr(renderer),
-	rect({x, y, size, size}),
-    dx(3.0), dy(0),
-    init_x(x), init_y(y),
-    x(rect.x), y(rect.y),
-    w(rect.w), h(rect.h)
+Ball::Ball(GameWindow* gw, const int& x, const int& y, const int& size)
+	: game_window(gw),
+	  rect({x, y, size, size}),
+	  dx(2.0), dy(0),
+	  init_x(x), init_y(y),
+	  x(rect.x), y(rect.y),
+	  w(rect.w), h(rect.h)
 {
-    
 }
 
-void Ball::move()
+void Ball::make_move()
 {
-	if (dx>=0)
+	if (dx >= 0)
 		x += static_cast<int>(dx < 1 ? ceil(dx) : dx);
 	else
 		x += static_cast<int>(dx > -1 ? floor(dx) : dx);
@@ -24,19 +22,95 @@ void Ball::move()
 		y += static_cast<int>(dy < 1 ? ceil(dy) : dy);
 	else
 		y += static_cast<int>(dy > -1 ? floor(dy) : dy);
-
-//	y += dy < 1 ? ceil(dy) : dy;
 }
 
 void Ball::reset()
 {
-    x = init_x;
-    y = init_y;
-    dy = 0;
+	x = init_x;
+	y = init_y;
+	dy = 0;
 }
 
 void Ball::render()
 {
-	SDL_SetRenderDrawColor( renderer_ptr, 0xFF, 0xFF, 0xFF, 0xFF );
-	SDL_RenderFillRect( renderer_ptr, &rect );
+	SDL_SetRenderDrawColor(game_window->renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+	SDL_RenderFillRect(game_window->renderer, &rect);
+}
+
+void Ball::change_position()
+{
+	// collision with wall
+	if (y <= 0 || (y + h) >= game_window->height)
+	{
+		dy *= -1.;
+	}
+
+	int rbm_width = game_window->racket2->w + w + game_window->margin; // racket, ball and margin width
+	if (dx > 0)
+	{
+		if (x < game_window->width - rbm_width - 1)
+		{
+			make_move();
+		}
+		else if (x >= game_window->width - rbm_width - 1)
+		{
+			// collision with racket
+			if (y + h >= game_window->racket2->y && y <= game_window->racket2->y + game_window->racket2->h)
+			{
+				// dy = -(dx/20) * (racket2->x - x);
+				dy = -(dx / game_window->random_number(40)) * (game_window->racket2->y + game_window->racket2->h / 2 - y - h / 2);
+				dx *= -1.;
+			}
+			else // racket didn't "bounce" ball
+			{
+				while (x < game_window->width + w)
+				{
+					make_move();
+					game_window->render_objects();
+					game_window->delay(game_window->speed);
+					game_window->event_handler(); // avoids rackets freeze (when action)
+				}
+				++(*game_window->scoreboard)[0];
+				game_window->scoreboard->update1();
+				reset();
+			}
+		}
+	}
+	else if (dx < 0)
+	{
+		if (x > rbm_width - w)
+		{
+			make_move();
+		}
+		else if (x <= rbm_width - w)
+		{
+			// collision with racket
+			if (y + h >= game_window->racket1->y && y <= game_window->racket1->y + game_window->racket1->h)
+			{
+				dy = -(dx / game_window->random_number(40)) * (game_window->racket1->y + game_window->racket1->h / 2 - y - h / 2);
+				// dy = -(dx/20) * (racket1->x + x);
+				dx *= -1;
+			}
+			else // racket didn't "bounce" ball
+			{
+				while (x >= -w)
+				{
+					make_move();
+					game_window->render_objects();
+					game_window->delay(game_window->speed);
+					game_window->event_handler(); // avoids rackets freeze (when action)
+				}
+				++(*game_window->scoreboard)[1];
+				game_window->scoreboard->update2();
+				reset();
+			}
+		}
+	}
+}
+
+int GameWindow::random_number(const int& number) const
+{
+	std::random_device rd;
+	std::uniform_int_distribution<int> dist(number - 15, number + 30);
+	return std::move(dist(rd));
 }

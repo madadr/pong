@@ -1,5 +1,5 @@
-#ifndef GAMEINDOW_H____
-#define GAMEINDOW_H____
+#ifndef GAMEWINDOW_HPP___
+#define GAMEWINDOW_HPP___
 
 #ifdef _WIN32
 #include <SDL.h>
@@ -19,31 +19,36 @@
 #include "Ball.hpp"
 #include "Scoreboard.hpp"
 
-class Racket;
+
 class Ball;
+class Racket;
 
 class GameWindow
 {
+public:
+	friend class Ball;
+	friend class Racket;
+public:
 private:
+	int speed;
 	SDL_Window* window;
 	SDL_Renderer* renderer;
 	int width;
 	int height;
 	int margin;
-	bool quit;
+	bool game_running;
 	SDL_Event event;
 	Racket* racket1;
 	Racket* racket2;
 	Ball* ball;
 	Scoreboard* scoreboard;
 public:
-	explicit GameWindow(int w, int h);
+	explicit GameWindow(const int& w, const int& h, const int& speed);
 	~GameWindow();
 	GameWindow(const GameWindow&) = delete;
 	GameWindow(GameWindow&&) = delete;
 	GameWindow& operator=(const GameWindow&) = delete;
 	GameWindow& operator=(GameWindow&&) = delete;
-	friend class RectObject;
 
 	void play();
 private:
@@ -51,8 +56,7 @@ private:
 	void render_background();
 	void render_objects();
 	void event_handler();
-	void delay() const;
-	void move_ball();
+	void delay(const int& ms) const;
 	int random_number(const int& number) const;
 };
 

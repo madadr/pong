@@ -29,7 +29,7 @@ private:
 	int x1, x2, y1, y2;
 	void update(const int& score, const int& x, const int& y, SDL_Rect* text_rect, SDL_Texture** text_texture);
 public:
-	Scoreboard(SDL_Renderer* renderer, int x, int y);
+	Scoreboard(SDL_Renderer* renderer, const int& x, const int& y);
 	~Scoreboard();
 	void update1();
 	void update2();

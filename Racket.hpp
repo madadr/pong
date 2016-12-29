@@ -1,5 +1,5 @@
-#ifndef RACKET_H___
-#define RACKET_H___
+#ifndef RACKET_HPP___
+#define RACKET_HPP___
 
 #ifdef _WIN32
 #include <SDL.h>
@@ -13,29 +13,36 @@
 
 #include <iostream>
 #include "GameWindow.hpp"
+#include "Ball.hpp"
+
+class Ball;
+class GameWindow;
 
 class Racket
 {
-    friend class GameWindow;
+	friend class Ball;
+	friend class GameWindow;
 private:
-    SDL_Rect rect;
-    SDL_Window* window_ptr;
-    SDL_Renderer* renderer_ptr;
-    int& x;
-    int& y;
-    int& w;
-    int& h;
+	SDL_Scancode key_up;
+	SDL_Scancode key_down;
+	SDL_Rect rect;
+	GameWindow* game_window;
+	int& x;
+	int& y;
+	int& w;
+	int& h;
 public:
-    explicit Racket(SDL_Window* window, SDL_Renderer* renderer, int x, int y, int width, int height);
-    ~Racket() = default;
+	explicit Racket(GameWindow* gw, const int& x, const int& y, const int& width, const int& height, const SDL_Scancode& up, const SDL_Scancode& down);
+	~Racket() = default;
 	Racket(const Racket&) = delete;
 	Racket(Racket&&) = delete;
 	Racket& operator=(const Racket&) = delete;
 	Racket& operator=(Racket&&) = delete;
-    // object control methods
+	// object control methods
 	void up();
 	void down();
 	void render();
+	void control(const Uint8* key_state);
 };
 
 #endif
