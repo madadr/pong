@@ -11,7 +11,7 @@ COMPILER_FLAGS = -g -pedantic
 LINKER_FLAGS = -lSDL2 -lSDL2_ttf -std=c++1y
 
 #OBJ_NAME specifies the name of our exectuable 
-OBJ_NAME = ping_pong 
+OBJ_NAME = pong 
 
 #This is the target that compiles our executable 
 all : $(OBJS)

@@ -47,35 +47,38 @@ void GameWindow::init()
 		std::cerr << "Cannot init SDL renderer. " << std::endl;
 		exit(EXIT_FAILURE); // TODO: Throw exception
 	}
-	else
-	{
-		//Set texture filtering to linear
-		if (!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1"))
-			std::cerr << "Warning: Linear texture filtering not enabled!" << std::endl;
+	//Set texture filtering to linear
+	if (!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1"))
+		std::cerr << "Warning: Linear texture filtering not enabled!" << std::endl;
 
-		//Create window
-		window = SDL_CreateWindow("Ping pong", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN);
-		if (window == nullptr)
-		{
-			std::cerr << "Cannot create SDL window. " << SDL_GetError() << std::endl;
-			exit(EXIT_FAILURE); // TODO: Throw exception
-		}
-		else
-		{
-			//Create renderer for window
-			renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
-			if (renderer == nullptr)
-			{
-				std::cerr << "Cannot init SDL renderer. " << std::endl;
-				exit(EXIT_FAILURE); // TODO: Throw exception
-			}
-			else
-			{
-				//Initialize renderer color
-				SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
-			}
-		}
+	//Create window
+	window = SDL_CreateWindow("Pong", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN);
+	if (window == nullptr)
+	{
+		std::cerr << "Cannot create SDL window. " << SDL_GetError() << std::endl;
+		exit(EXIT_FAILURE); // TODO: Throw exception
 	}
+
+	//Create renderer for window
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
+	if (renderer == nullptr)
+	{
+		std::cerr << "Cannot init SDL renderer. " << std::endl;
+		exit(EXIT_FAILURE); // TODO: Throw exception
+	}
+
+	// load icon surface 
+	SDL_Surface* icon = SDL_LoadBMP("pong.ico");
+	if (icon == nullptr)
+	{
+		std::cerr << "Cannot load icon file. " << std::endl;
+		exit(EXIT_FAILURE); // TODO: Throw exception
+	}
+	// set window icon
+	SDL_SetWindowIcon(window, icon);
+
+	//Initialize renderer color
+	SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
 }
 
 void GameWindow::render_background()

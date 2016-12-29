@@ -2,15 +2,13 @@
 .vscode/*
 .vscode/*.json
 
-ping_pong
+pong
 *.out
 .vs/*
 x64/*
 Debug/*
 Release/*
-*sdl_utils*
 *.log
-*.ini
 *.sln
 *.vcxproj
 
