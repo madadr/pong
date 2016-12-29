@@ -15,8 +15,6 @@ GameWindow::GameWindow(const int& w, const int& h, const int& speed)
 {
 	init();
 
-	scoreboard = new Scoreboard(renderer, width / 2, 40);
-
 	int racket_width = width / 25;
 	int racket_height = height / 5;
 	int racket1_x = margin - 1;
@@ -29,10 +27,13 @@ GameWindow::GameWindow(const int& w, const int& h, const int& speed)
 	int ball_x = width / 2;
 	int ball_y = height / 2;
 	ball = new Ball(this, ball_x, ball_y, ball_size);
+
+	scoreboard = new Scoreboard(this);
 }
 
 GameWindow::~GameWindow()
 {
+	delete scoreboard;
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 	SDL_Quit();

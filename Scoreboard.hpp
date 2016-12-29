@@ -16,6 +16,7 @@
 
 #include <iostream>
 #include <string>
+#include "GameWindow.hpp"
 
 class Scoreboard
 {
@@ -24,12 +25,13 @@ private:
 	SDL_Rect text1_rect, text2_rect;
 	SDL_Texture* text1_texture;
 	SDL_Texture* text2_texture;
-	SDL_Renderer* renderer_ptr;
+	GameWindow* game_window;
 	TTF_Font* font;
 	int x1, x2, y1, y2;
 	void update(const int& score, const int& x, const int& y, SDL_Rect* text_rect, SDL_Texture** text_texture);
+	void move_text1();
 public:
-	Scoreboard(SDL_Renderer* renderer, const int& x, const int& y);
+	Scoreboard(GameWindow* gw);
 	~Scoreboard();
 	void update1();
 	void update2();

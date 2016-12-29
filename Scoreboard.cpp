@@ -1,11 +1,14 @@
 #include "Scoreboard.hpp"
 
-Scoreboard::Scoreboard(SDL_Renderer* renderer, const int& x, const int& y)
-	: renderer_ptr(renderer),
-	  x1(x - 120), x2(x + 100), // TODO: make x1, x2 dependent of GameWindow object
-	  y1(y), y2(y),
+Scoreboard::Scoreboard(GameWindow* gw)
+	: game_window(gw),
 	  score1(0), score2(0),
-	  font(nullptr)
+	  font(nullptr),
+	x1(game_window->width / 2 - game_window->width / 10),
+	x2(game_window->width / 2 + game_window->width / 10),
+	y1(game_window->height / 15),
+	y2(game_window->height / 15)
+
 {
 	if (TTF_Init() == -1)
 	{
@@ -19,6 +22,7 @@ Scoreboard::Scoreboard(SDL_Renderer* renderer, const int& x, const int& y)
 		std::cerr << "Font not found." << std::endl;
 		exit(EXIT_FAILURE); // TODO: Throw exception
 	}
+	move_text1();
 	update1();
 	update2();
 }
@@ -43,10 +47,9 @@ void Scoreboard::update2()
 
 void Scoreboard::render()
 {
-	SDL_SetRenderDrawColor(renderer_ptr, 0xFF, 0x00, 0xFF, 0xFF);
-	SDL_RenderCopy(renderer_ptr, text1_texture, nullptr, &text1_rect);
-	SDL_RenderCopy(renderer_ptr, text2_texture, nullptr, &text2_rect);
-	//	SDL_RenderPresent(renderer_ptr);
+	SDL_SetRenderDrawColor(game_window->renderer, 0xFF, 0x00, 0xFF, 0xFF);
+	SDL_RenderCopy(game_window->renderer, text1_texture, nullptr, &text1_rect);
+	SDL_RenderCopy(game_window->renderer, text2_texture, nullptr, &text2_rect);
 }
 
 int& Scoreboard::operator[](const int& index)
@@ -63,18 +66,48 @@ int& Scoreboard::operator[](const int& index)
 
 void Scoreboard::update(const int& score, const int& x, const int& y, SDL_Rect* text_rect, SDL_Texture** text_texture)
 {
-	int text_width;
-	int text_height;
+	static int text_width;
+	static int text_height;
 	SDL_Surface* surface;
-	SDL_Color textColor = {255, 255, 255, 0};
+	static SDL_Color textColor = {255, 255, 255, 0};
 
 	surface = TTF_RenderText_Solid(font, std::to_string(score).c_str(), textColor);
-	*text_texture = SDL_CreateTextureFromSurface(renderer_ptr, surface);
+	*text_texture = SDL_CreateTextureFromSurface(game_window->renderer, surface);
 	text_width = surface->w;
 	text_height = surface->h;
 	SDL_FreeSurface(surface);
+
 	text_rect->x = x;
 	text_rect->y = y;
 	text_rect->w = text_width;
 	text_rect->h = text_height;
+
+	if(text_rect->x < game_window->width / 2)
+	{
+		if (score1 == 9)
+			x1 -= surface->w;
+		else if(score1 == 99)
+			x1 -= surface->w / 2;
+		else if (score1 == 999)
+			x1 -= surface->w / 3;
+	}
+}
+
+void Scoreboard::move_text1()
+{
+	// moves score1 text at the same distance from middle as score2 text
+	static int text_width;
+	static int text_height;
+	SDL_Surface* surface;
+	static SDL_Color textColor = { 255, 255, 255, 0 };
+
+	surface = TTF_RenderText_Solid(font, std::to_string(0).c_str(), textColor);
+	text1_texture = SDL_CreateTextureFromSurface(game_window->renderer, surface);
+	text_width = surface->w;
+	text_height = surface->h;
+
+	x1 -= surface->w;
+
+	SDL_FreeSurface(surface);
+	surface = nullptr;
 }

@@ -22,12 +22,14 @@
 
 class Ball;
 class Racket;
+class Scoreboard;
 
 class GameWindow
 {
 public:
 	friend class Ball;
 	friend class Racket;
+	friend class Scoreboard;
 public:
 private:
 	int speed;
