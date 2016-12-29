@@ -63,10 +63,6 @@ int& Scoreboard::operator[](const int& index)
 
 void Scoreboard::update(const int& score, const int& x, const int& y, SDL_Rect* text_rect, SDL_Texture** text_texture)
 {
-	// destroy old texture
-	SDL_DestroyTexture(*text_texture);
-	text_texture = nullptr;
-
 	int text_width;
 	int text_height;
 	SDL_Surface* surface;

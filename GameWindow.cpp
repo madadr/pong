@@ -131,6 +131,7 @@ void GameWindow::event_handler()
 	SDL_PumpEvents();
 	if (SDL_PollEvent(&event) != 0 && event.type == SDL_QUIT)
 		game_running = false;
+
 	racket1->control(key_state);
 	racket2->control(key_state);
 
