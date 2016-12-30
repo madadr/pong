@@ -31,8 +31,10 @@ private:
 	int& y;
 	int& w;
 	int& h;
+	int step;
 public:
-	explicit Racket(GameWindow* gw, const int& x, const int& y, const int& width, const int& height, const SDL_Scancode& up, const SDL_Scancode& down);
+	enum side{LEFT, RIGHT};
+	explicit Racket(GameWindow* gw, const side& racket_side, const SDL_Scancode& up, const SDL_Scancode& down);
 	~Racket() = default;
 	Racket(const Racket&) = delete;
 	Racket(Racket&&) = delete;

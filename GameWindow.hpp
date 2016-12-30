@@ -30,7 +30,6 @@ public:
 	friend class Ball;
 	friend class Racket;
 	friend class Scoreboard;
-public:
 private:
 	int speed;
 	SDL_Window* window;
@@ -45,7 +44,7 @@ private:
 	Ball* ball;
 	Scoreboard* scoreboard;
 public:
-	explicit GameWindow(const int& w, const int& h, const int& speed);
+	explicit GameWindow(const int& window_width, const int& window_height, const int& speed);
 	~GameWindow();
 	GameWindow(const GameWindow&) = delete;
 	GameWindow(GameWindow&&) = delete;

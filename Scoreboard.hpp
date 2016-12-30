@@ -33,6 +33,10 @@ private:
 public:
 	Scoreboard(GameWindow* gw);
 	~Scoreboard();
+	Scoreboard(const Scoreboard&) = delete;
+	Scoreboard(Scoreboard&&) = delete;
+	Scoreboard& operator=(const Scoreboard&) = delete;
+	Scoreboard& operator=(Scoreboard&&) = delete;
 	void update1();
 	void update2();
 	void render();

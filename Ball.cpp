@@ -1,14 +1,16 @@
 #include "Ball.hpp"
 
 
-Ball::Ball(GameWindow* gw, const int& x, const int& y, const int& size)
+Ball::Ball(GameWindow* gw, const int& size)
 	: game_window(gw),
-	  rect({x, y, size, size}),
 	  dx(2.0), dy(0),
-	  init_x(x), init_y(y),
+	  init_x((gw->width/2) - size / 2),
+	  init_y((gw->height/2) - size / 2),
+	  rect({init_x, init_y, size, size}),
 	  x(rect.x), y(rect.y),
 	  w(rect.w), h(rect.h)
 {
+	reset();
 }
 
 void Ball::make_move()
@@ -57,7 +59,6 @@ void Ball::change_position()
 			// collision with racket
 			if (y + h >= game_window->racket2->y && y <= game_window->racket2->y + game_window->racket2->h)
 			{
-				// dy = -(dx/20) * (racket2->x - x);
 				dy = -(dx / game_window->random_number(40)) * (game_window->racket2->y + game_window->racket2->h / 2 - y - h / 2);
 				dx *= -1.;
 			}
@@ -88,7 +89,6 @@ void Ball::change_position()
 			if (y + h >= game_window->racket1->y && y <= game_window->racket1->y + game_window->racket1->h)
 			{
 				dy = -(dx / game_window->random_number(40)) * (game_window->racket1->y + game_window->racket1->h / 2 - y - h / 2);
-				// dy = -(dx/20) * (racket1->x + x);
 				dx *= -1;
 			}
 			else // racket didn't "bounce" ball

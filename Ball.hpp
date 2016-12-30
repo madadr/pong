@@ -28,7 +28,7 @@ private:
 	int &x, &y, &w, &h;
 	double dx, dy;
 public:
-	explicit Ball(GameWindow* gw, const int& x, const int& y, const int& size);
+	explicit Ball(GameWindow* gw, const int& size);
 	~Ball() = default;
 	Ball(const Ball&) = delete;
 	Ball(Ball&&) = delete;

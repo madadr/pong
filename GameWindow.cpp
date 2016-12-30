@@ -1,9 +1,9 @@
 #include "GameWindow.hpp"
 
-GameWindow::GameWindow(const int& w, const int& h, const int& speed)
-	: width(w),
-	  height(h),
-	  margin(20),
+GameWindow::GameWindow(const int& window_width, const int& window_height, const int& speed)
+	: width(window_width),
+	  height(window_height),
+	  margin(window_width / 30),
 	  window(nullptr),
 	  renderer(nullptr),
 	  racket1(nullptr),
@@ -15,18 +15,11 @@ GameWindow::GameWindow(const int& w, const int& h, const int& speed)
 {
 	init();
 
-	int racket_width = width / 25;
-	int racket_height = height / 5;
-	int racket1_x = margin - 1;
-	int racket2_x = width - racket_width - margin + 1;
-	int racket_y = height / 2;
-	racket1 = new Racket(this, racket1_x, racket_y, racket_width, racket_height, SDL_SCANCODE_A, SDL_SCANCODE_Z);
-	racket2 = new Racket(this, racket2_x, racket_y, racket_width, racket_height, SDL_SCANCODE_UP, SDL_SCANCODE_DOWN);
+	racket1 = new Racket(this, Racket::side::LEFT, SDL_SCANCODE_A, SDL_SCANCODE_Z);
+	racket2 = new Racket(this, Racket::side::RIGHT, SDL_SCANCODE_UP, SDL_SCANCODE_DOWN);
 
-	int ball_size = 10;
-	int ball_x = width / 2;
-	int ball_y = height / 2;
-	ball = new Ball(this, ball_x, ball_y, ball_size);
+	int ball_size = width / 60;
+	ball = new Ball(this, std::move(ball_size));
 
 	scoreboard = new Scoreboard(this);
 }
@@ -138,24 +131,6 @@ void GameWindow::event_handler()
 
 	racket1->control(key_state);
 	racket2->control(key_state);
-
-	/*while (SDL_PollEvent(&event) != 0)
-	{
-		if (event.type == SDL_QUIT)
-			game_running = false;
-		if (event.type == SDL_KEYDOWN)
-		{
-			if (event.key.keysym.sym == SDLK_a)
-				racket1->up();
-			if (event.key.keysym.sym == SDLK_z)
-				racket1->down();
-
-			if (event.key.keysym.sym == SDLK_UP)
-				racket2->up();
-			if (event.key.keysym.sym == SDLK_DOWN)
-				racket2->down();
-		}
-	}*/
 }
 
 void GameWindow::delay(const int& ms) const

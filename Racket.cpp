@@ -1,18 +1,25 @@
 #include "Racket.hpp"
 
 
-Racket::Racket(GameWindow* gw, const int& x, const int& y, const int& width, const int& height, const SDL_Scancode& up, const SDL_Scancode& down)
+Racket::Racket(GameWindow* gw, const side& racket_side, const SDL_Scancode& up, const SDL_Scancode& down)
 	: game_window(gw),
-	  rect({x, y, width, height}),
-	  x(rect.x), y(rect.y),
-	  w(rect.w), h(rect.h),
-	  key_up(up), key_down(down)
+	  key_up(up), key_down(down),
+	  x(rect.x),
+	  y(rect.y),
+	  w(rect.w),
+	  h(rect.h),
+	  step(static_cast<int>(gw->speed / 2.5))
 {
+	int racket_w = game_window->width / 25;
+	int racket_h = game_window->height / 5;
+	int racket_x = (racket_side == LEFT) ? gw->margin - 1 : gw->width - gw->margin + 1 - racket_w;
+	int racket_y = game_window->height / 2 - racket_h / 2;
+	rect = {std::move(racket_x), std::move(racket_y), std::move(racket_w), std::move(racket_h)};
 }
+
 
 void Racket::up()
 {
-	int step = 2;
 	y -= step;
 	if (y < 0)
 		y = 0;
@@ -20,12 +27,9 @@ void Racket::up()
 
 void Racket::down()
 {
-	int window_height;
-	SDL_GetWindowSize(game_window->window, nullptr, &window_height);
-	int step = 2;
 	y += step;
-	if (y > window_height - h)
-		y = window_height - h;
+	if (y > game_window->height - h)
+		y = game_window->height - h;
 }
 
 void Racket::render()
