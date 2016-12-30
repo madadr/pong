@@ -9,8 +9,9 @@ GameWindow::GameWindow(const int& window_width, const int& window_height, const 
 	  racket1(nullptr),
 	  racket2(nullptr),
 	  ball(nullptr),
-	  game_running(false),
 	  scoreboard(nullptr),
+	  menu(nullptr),
+	  game_running(false),
 	  speed(speed)
 {
 	init();
@@ -22,10 +23,13 @@ GameWindow::GameWindow(const int& window_width, const int& window_height, const 
 	ball = new Ball(this, std::move(ball_size));
 
 	scoreboard = new Scoreboard(this);
+
+	menu = new Menu(this);
 }
 
 GameWindow::~GameWindow()
 {
+	// TODO: delete memory leaks!
 	delete scoreboard;
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
@@ -91,9 +95,10 @@ void GameWindow::render_background()
 
 void GameWindow::play()
 {
-	game_running = true;
+	display_menu();
 	while (game_running)
 	{
+		// TODO: add pause handler
 		event_handler();
 		ball->change_position();
 		render_objects();
@@ -136,4 +141,53 @@ void GameWindow::event_handler()
 void GameWindow::delay(const int& ms) const
 {
 	std::this_thread::sleep_for(std::chrono::milliseconds(ms));
+}
+
+void GameWindow::display_menu()
+{
+	bool quit_menu = false;
+	bool quit_info = false;
+	render_objects();
+	menu->render_startup();
+	while (!quit_menu)
+	{
+		while (SDL_PollEvent(&event) != 0)
+		{
+			if (event.type == SDL_QUIT)
+			{
+				quit_menu = true;
+				game_running = false;
+			}
+			else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_s)
+			{
+				quit_menu = true;
+				game_running = true;
+			}
+			else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_i)
+			{
+				render_objects();
+				menu->render_info();
+				while (!quit_info)
+				{
+					while (SDL_PollEvent(&event) != 0)
+					{
+						if (event.type == SDL_QUIT)
+						{
+							quit_info = true;
+							quit_menu = true;
+							game_running = false;
+						}
+						else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_b)
+						{
+							render_objects();
+							menu->render_startup();
+							quit_info = true;
+							break;
+						}
+					}
+				}
+				quit_info = false;
+			}
+		}
+	}
 }

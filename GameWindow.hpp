@@ -18,11 +18,14 @@
 #include "Racket.hpp"
 #include "Ball.hpp"
 #include "Scoreboard.hpp"
-
+#include "Text.hpp"
+#include "Menu.hpp"
 
 class Ball;
 class Racket;
 class Scoreboard;
+class Text;
+class Menu;
 
 class GameWindow
 {
@@ -30,6 +33,8 @@ public:
 	friend class Ball;
 	friend class Racket;
 	friend class Scoreboard;
+	friend class Text;
+	friend class Menu;
 private:
 	int speed;
 	SDL_Window* window;
@@ -43,6 +48,7 @@ private:
 	Racket* racket2;
 	Ball* ball;
 	Scoreboard* scoreboard;
+	Menu* menu;
 public:
 	explicit GameWindow(const int& window_width, const int& window_height, const int& speed);
 	~GameWindow();
@@ -59,6 +65,7 @@ private:
 	void event_handler();
 	void delay(const int& ms) const;
 	int random_number(const int& number) const;
+	void display_menu();
 };
 
 #endif

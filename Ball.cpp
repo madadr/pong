@@ -4,8 +4,8 @@
 Ball::Ball(GameWindow* gw, const int& size)
 	: game_window(gw),
 	  dx(2.0), dy(0),
-	  init_x((gw->width/2) - size / 2),
-	  init_y((gw->height/2) - size / 2),
+	  init_x((gw->width / 2) - size / 2),
+	  init_y((gw->height / 2) - size / 2),
 	  rect({init_x, init_y, size, size}),
 	  x(rect.x), y(rect.y),
 	  w(rect.w), h(rect.h)
@@ -110,7 +110,7 @@ void Ball::change_position()
 
 int GameWindow::random_number(const int& number) const
 {
-	std::random_device rd;
+	static std::random_device rd;
 	std::uniform_int_distribution<int> dist(number - 15, number + 30);
 	return std::move(dist(rd));
 }

@@ -18,6 +18,8 @@
 #include <string>
 #include "GameWindow.hpp"
 
+// TODO: make Scoreboard consistent with Text / Menu
+
 class Scoreboard
 {
 private:
