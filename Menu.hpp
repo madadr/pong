@@ -47,10 +47,14 @@ private:
 	uPtrText pause, pause_key;
 	uPtrText game, paused;
 	uPtrText unpause, unpause_key;
+	uPtrText back_to_menu, win1, win2;
+	uPtrText restart, restart_key;
 
 	void init_startup_strings();
 	void init_info_strings();
 	void init_paused_strings();
+	void init_win_strings();
+	void render_win() const;
 public:
 	Menu(GameWindow* gw);
 	~Menu() = default;
@@ -61,6 +65,8 @@ public:
 	void render_startup() const;
 	void render_info() const;
 	void render_pause() const;
+	void render_win1() const;
+	void render_win2() const;
 };
 
 

@@ -37,6 +37,7 @@ public:
 	friend class Text;
 	friend class Menu;
 private:
+	const int MAX_SCORE;
 	int speed;
 	SDL_Window* window;
 	SDL_Renderer* renderer;
@@ -51,7 +52,7 @@ private:
 	std::unique_ptr<Scoreboard> scoreboard;
 	std::unique_ptr<Menu> menu;
 public:
-	explicit GameWindow(const int& window_width, const int& window_height, const int& speed);
+	explicit GameWindow(const int& window_width, const int& window_height, const int& max_score);
 	~GameWindow();
 	GameWindow(const GameWindow&) = delete;
 	GameWindow(GameWindow&&) = delete;
@@ -65,9 +66,10 @@ private:
 	void render_objects();
 	void event_handler();
 	void delay(const int& ms) const;
-	int random_number(const int& number) const;
 	void display_menu();
 	void pause_handler();
+	void detect_game_end();
+	void game_end_handler();
 };
 
 #endif

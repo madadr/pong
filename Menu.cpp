@@ -17,6 +17,7 @@ Menu::Menu(GameWindow* gw)
 	init_startup_strings();
 	init_info_strings();
 	init_paused_strings();
+	init_win_strings();
 }
 
 void Menu::init_startup_strings()
@@ -54,6 +55,26 @@ void Menu::init_paused_strings()
 	unpause_key = std::make_unique<Text>(game_window, std::string("PRESS P"), position[RIGHT2].first, position[RIGHT2].second, font_size);
 }
 
+void Menu::init_win_strings()
+{
+	win1 = std::make_unique<Text>(game_window, std::string("WIN!"), position[LEFT1].first, position[LEFT1].second, 1.5 * font_size);
+	win2 = std::make_unique<Text>(game_window, std::string("WIN!"), position[RIGHT1].first, position[RIGHT1].second, 1.5 * font_size);
+
+	restart = std::make_unique<Text>(game_window, std::string("RESTART"), position[LEFT3].first, position[LEFT3].second, font_size);
+	restart_key = std::make_unique<Text>(game_window, std::string("RESTART R"), position[RIGHT3].first, position[RIGHT3].second, font_size);
+
+	back_to_menu = std::make_unique<Text>(game_window, std::string("BACK TO MENU"), position[LEFT4].first, position[LEFT4].second, font_size);
+}
+
+void Menu::render_win() const
+{
+	restart->render();
+	restart_key->render();
+	back_to_menu->render();
+	back_key->render();
+	SDL_RenderPresent(game_window->renderer);
+}
+
 void Menu::render_startup() const
 {
 	start->render();
@@ -83,4 +104,16 @@ void Menu::render_pause() const
 	unpause->render();
 	unpause_key->render();
 	SDL_RenderPresent(game_window->renderer);
+}
+
+void Menu::render_win1() const
+{
+	win1->render();
+	render_win();
+}
+
+void Menu::render_win2() const
+{
+	win2->render();
+	render_win();
 }

@@ -1,6 +1,6 @@
 #include "GameWindow.hpp"
 
-GameWindow::GameWindow(const int& window_width, const int& window_height, const int& speed)
+GameWindow::GameWindow(const int& window_width, const int& window_height, const int& max_score)
 	: width(window_width),
 	  height(window_height),
 	  margin(window_width / 30),
@@ -12,7 +12,8 @@ GameWindow::GameWindow(const int& window_width, const int& window_height, const 
 	  scoreboard(nullptr),
 	  menu(nullptr),
 	  game_running(false),
-	  speed(speed)
+	  speed(5),
+MAX_SCORE(max_score)
 {
 	init();
 
@@ -106,6 +107,7 @@ void GameWindow::play()
 		event_handler();
 		ball->change_position();
 		render_objects();
+		detect_game_end();
 		delay(speed);
 	}
 }
@@ -219,5 +221,49 @@ void GameWindow::pause_handler()
 			}
 		}
 	}
-	quit_pause = false;
+}
+
+void GameWindow::detect_game_end()
+{
+	if ((*scoreboard)[0] == MAX_SCORE || (*scoreboard)[1] == MAX_SCORE)
+	{
+		if ((*scoreboard)[0] == MAX_SCORE)
+			menu->render_win1();
+		else
+			menu->render_win2();
+
+		game_end_handler();
+		scoreboard->reset();
+		scoreboard->update1();
+		scoreboard->update2();
+		racket1->reset();
+		racket2->reset();
+	}
+}
+
+void GameWindow::game_end_handler()
+{
+	bool quit_end = false;
+	while (!quit_end)
+	{
+		while (SDL_PollEvent(&event) != 0)
+		{
+			if (event.type == SDL_QUIT)
+			{
+				quit_end = true;
+				game_running = false;
+			}
+			else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_b)
+			{
+				render_objects();
+				display_menu();
+				quit_end = true;
+			}
+			else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_r)
+			{
+				render_objects();
+				quit_end = true;
+			}
+		}
+	}
 }

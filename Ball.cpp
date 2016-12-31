@@ -59,7 +59,7 @@ void Ball::change_position()
 			// collision with racket
 			if (y + h >= game_window->racket2->y && y <= game_window->racket2->y + game_window->racket2->h)
 			{
-				dy = -(dx / game_window->random_number(40)) * (game_window->racket2->y + game_window->racket2->h / 2 - y - h / 2);
+				dy = -(dx / random_number(40)) * (game_window->racket2->y + game_window->racket2->h / 2 - y - h / 2);
 				dx *= -1.;
 			}
 			else // racket didn't "bounce" ball
@@ -88,7 +88,7 @@ void Ball::change_position()
 			// collision with racket
 			if (y + h >= game_window->racket1->y && y <= game_window->racket1->y + game_window->racket1->h)
 			{
-				dy = -(dx / game_window->random_number(40)) * (game_window->racket1->y + game_window->racket1->h / 2 - y - h / 2);
+				dy = -(dx / random_number(40)) * (game_window->racket1->y + game_window->racket1->h / 2 - y - h / 2);
 				dx *= -1;
 			}
 			else // racket didn't "bounce" ball
@@ -108,7 +108,7 @@ void Ball::change_position()
 	}
 }
 
-int GameWindow::random_number(const int& number) const
+int Ball::random_number(const int& number) const
 {
 	static std::random_device rd;
 	std::uniform_int_distribution<int> dist(number - 15, number + 30);
