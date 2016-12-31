@@ -20,11 +20,12 @@ Text::~Text()
 	TTF_CloseFont(font);
 }
 
-void Text::render()
+// NOTE: Rather "prepare to render". After calling render() on Text obj, you must call SDL_RenderPresent to display text.
+void Text::render() const
 {
 	SDL_SetRenderDrawColor(game_window->renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 	SDL_RenderCopy(game_window->renderer, texture, nullptr, &rect);
-	SDL_RenderPresent(game_window->renderer);
+	// Call SDL_RenderPresent(game_window->renderer); to display !
 }
 
 void Text::move_left_side_text()

@@ -16,45 +16,71 @@ Menu::Menu(GameWindow* gw)
 {
 	init_startup_strings();
 	init_info_strings();
+	init_paused_strings();
 }
 
 void Menu::init_startup_strings()
 {
 	// create startup strings
-	start = std::make_shared<Text>(game_window, std::string("START"), position[LEFT2].first, position[LEFT2].second, font_size);
-	start_key = std::make_shared<Text>(game_window, std::string("PRESS S"), position[RIGHT2].first, position[RIGHT2].second, font_size);
+	start = std::make_unique<Text>(game_window, std::string("START"), position[LEFT2].first, position[LEFT2].second, font_size);
+	start_key = std::make_unique<Text>(game_window, std::string("PRESS S"), position[RIGHT2].first, position[RIGHT2].second, font_size);
 
-	info = std::make_shared<Text>(game_window, std::string("INFO"), position[LEFT3].first, position[LEFT3].second, font_size);
-	info_key = std::make_shared<Text>(game_window, std::string("PRESS I"), position[RIGHT3].first, position[RIGHT3].second, font_size);
+	info = std::make_unique<Text>(game_window, std::string("INFO"), position[LEFT3].first, position[LEFT3].second, font_size);
+	info_key = std::make_unique<Text>(game_window, std::string("PRESS I"), position[RIGHT3].first, position[RIGHT3].second, font_size);
 }
 
 void Menu::init_info_strings()
 {
 	// create info strings
-	player1_up = std::make_shared<Text>(game_window, std::string("UP A"), position[LEFT1].first, position[LEFT1].second, font_size);
-	player1_down = std::make_shared<Text>(game_window, std::string("DOWN Z"), position[LEFT2].first, position[LEFT2].second, font_size);
+	player1_up = std::make_unique<Text>(game_window, std::string("UP A"), position[LEFT1].first, position[LEFT1].second, font_size);
+	player1_down = std::make_unique<Text>(game_window, std::string("DOWN Z"), position[LEFT2].first, position[LEFT2].second, font_size);
 
-	player2_up = std::make_shared<Text>(game_window, std::string("UP /\\"), position[RIGHT1].first, position[RIGHT1].second, font_size);
-	player2_down = std::make_shared<Text>(game_window, std::string("DOWN \\/"), position[RIGHT2].first, position[RIGHT2].second, font_size);
+	player2_up = std::make_unique<Text>(game_window, std::string("UP /\\"), position[RIGHT1].first, position[RIGHT1].second, font_size);
+	player2_down = std::make_unique<Text>(game_window, std::string("DOWN \\/"), position[RIGHT2].first, position[RIGHT2].second, font_size);
 
-	back = std::make_shared<Text>(game_window, std::string("BACK"), position[LEFT3].first, position[LEFT3].second, font_size);
-	back_key = std::make_shared<Text>(game_window, std::string("PRESS B"), position[RIGHT3].first, position[RIGHT3].second, font_size);
+	pause = std::make_unique<Text>(game_window, std::string("PAUSE"), position[LEFT3].first, position[LEFT3].second, font_size);
+	pause_key = std::make_unique<Text>(game_window, std::string("PRESS P"), position[RIGHT3].first, position[RIGHT3].second, font_size);
+
+	back = std::make_unique<Text>(game_window, std::string("BACK"), position[LEFT4].first, position[LEFT4].second, font_size);
+	back_key = std::make_unique<Text>(game_window, std::string("PRESS B"), position[RIGHT4].first, position[RIGHT4].second, font_size);
 }
 
-void Menu::render_startup()
+void Menu::init_paused_strings()
+{
+	game = std::make_unique<Text>(game_window, std::string("GAME"), position[LEFT1].first, position[LEFT1].second, 1.5 * font_size);
+	paused = std::make_unique<Text>(game_window, std::string("PAUSED"), position[RIGHT1].first, position[RIGHT1].second, 1.5 * font_size);
+
+	unpause = std::make_unique<Text>(game_window, std::string("CONTINUE"), position[LEFT2].first, position[LEFT2].second, font_size);
+	unpause_key = std::make_unique<Text>(game_window, std::string("PRESS P"), position[RIGHT2].first, position[RIGHT2].second, font_size);
+}
+
+void Menu::render_startup() const
 {
 	start->render();
 	start_key->render();
 	info->render();
 	info_key->render();
+	SDL_RenderPresent(game_window->renderer);
 }
 
-void Menu::render_info()
+void Menu::render_info() const
 {
 	player1_up->render();
 	player1_down->render();
 	player2_up->render();
 	player2_down->render();
+	pause->render();
+	pause_key->render();
 	back->render();
 	back_key->render();
+	SDL_RenderPresent(game_window->renderer);
+}
+
+void Menu::render_pause() const
+{
+	game->render();
+	paused->render();
+	unpause->render();
+	unpause_key->render();
+	SDL_RenderPresent(game_window->renderer);
 }

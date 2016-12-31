@@ -37,7 +37,7 @@ public:
 	// object control methods
 	void make_move();
 	void change_position();
-	void render();
+	void render() const;
 	void reset();
 };
 

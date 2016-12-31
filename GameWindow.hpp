@@ -14,6 +14,7 @@
 #include <iostream>
 #include <thread>
 #include <chrono>
+#include <memory>
 #include <random>
 #include "Racket.hpp"
 #include "Ball.hpp"
@@ -44,11 +45,11 @@ private:
 	int margin;
 	bool game_running;
 	SDL_Event event;
-	Racket* racket1;
-	Racket* racket2;
-	Ball* ball;
-	Scoreboard* scoreboard;
-	Menu* menu;
+	std::unique_ptr<Racket> racket1;
+	std::unique_ptr<Racket> racket2;
+	std::unique_ptr<Ball> ball;
+	std::unique_ptr<Scoreboard> scoreboard;
+	std::unique_ptr<Menu> menu;
 public:
 	explicit GameWindow(const int& window_width, const int& window_height, const int& speed);
 	~GameWindow();
@@ -60,12 +61,13 @@ public:
 	void play();
 private:
 	void init();
-	void render_background();
+	void render_background() const;
 	void render_objects();
 	void event_handler();
 	void delay(const int& ms) const;
 	int random_number(const int& number) const;
 	void display_menu();
+	void pause_handler();
 };
 
 #endif

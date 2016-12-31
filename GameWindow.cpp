@@ -16,21 +16,18 @@ GameWindow::GameWindow(const int& window_width, const int& window_height, const 
 {
 	init();
 
-	racket1 = new Racket(this, Racket::side::LEFT, SDL_SCANCODE_A, SDL_SCANCODE_Z);
-	racket2 = new Racket(this, Racket::side::RIGHT, SDL_SCANCODE_UP, SDL_SCANCODE_DOWN);
+	racket1 = std::make_unique<Racket>(this, Racket::side::LEFT, SDL_SCANCODE_A, SDL_SCANCODE_Z);
+	racket2 = std::make_unique<Racket>(this, Racket::side::RIGHT, SDL_SCANCODE_UP, SDL_SCANCODE_DOWN);
 
 	int ball_size = width / 60;
-	ball = new Ball(this, std::move(ball_size));
+	ball = std::make_unique<Ball>(this, std::move(ball_size));
 
-	scoreboard = new Scoreboard(this);
-
-	menu = new Menu(this);
+	scoreboard = std::make_unique<Scoreboard>(this);
+	menu = std::make_unique<Menu>(this);
 }
 
 GameWindow::~GameWindow()
 {
-	// TODO: delete memory leaks!
-	delete scoreboard;
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 	SDL_Quit();
@@ -71,6 +68,14 @@ void GameWindow::init()
 		std::cerr << "Cannot load icon file. " << std::endl;
 		exit(EXIT_FAILURE); // TODO: Throw exception
 	}
+
+	// init TTF
+	if (TTF_Init() == -1)
+	{
+		std::cerr << "Cannot init TTF renderer. " << TTF_GetError() << std::endl;
+		exit(EXIT_FAILURE); // TODO: Throw exception
+	}
+
 	// set window icon
 	SDL_SetWindowIcon(window, icon);
 
@@ -78,7 +83,7 @@ void GameWindow::init()
 	SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
 }
 
-void GameWindow::render_background()
+void GameWindow::render_background() const
 {
 	// line in the middle
 	SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
@@ -98,7 +103,6 @@ void GameWindow::play()
 	display_menu();
 	while (game_running)
 	{
-		// TODO: add pause handler
 		event_handler();
 		ball->change_position();
 		render_objects();
@@ -114,7 +118,7 @@ void GameWindow::render_objects()
 
 	// render playground
 	render_background();
-
+	
 	// Render objects
 	ball->render();
 	racket1->render();
@@ -133,6 +137,9 @@ void GameWindow::event_handler()
 	SDL_PumpEvents();
 	if (SDL_PollEvent(&event) != 0 && event.type == SDL_QUIT)
 		game_running = false;
+
+	if(event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_p)
+		pause_handler();
 
 	racket1->control(key_state);
 	racket2->control(key_state);
@@ -190,4 +197,27 @@ void GameWindow::display_menu()
 			}
 		}
 	}
+}
+
+void GameWindow::pause_handler()
+{
+	bool quit_pause = false;
+	menu->render_pause();
+	while (!quit_pause)
+	{
+		while (SDL_PollEvent(&event) != 0)
+		{
+			if (event.type == SDL_QUIT)
+			{
+				quit_pause = true;
+				game_running = false;
+			}
+			else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_p)
+			{
+				render_objects();
+				quit_pause = true;
+			}
+		}
+	}
+	quit_pause = false;
 }

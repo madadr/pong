@@ -33,7 +33,7 @@ void Ball::reset()
 	dy = 0;
 }
 
-void Ball::render()
+void Ball::render() const
 {
 	SDL_SetRenderDrawColor(game_window->renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 	SDL_RenderFillRect(game_window->renderer, &rect);

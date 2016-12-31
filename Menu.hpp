@@ -34,19 +34,23 @@ public:
 	};
 	using posXY = std::pair<int, int>;
 	const std::array<posXY, 8> position;
-	using sPtrText = std::shared_ptr<class Text>;
+	using uPtrText = std::unique_ptr<class Text>;
 private:
 	GameWindow* game_window;
 	int font_size;
 
-	sPtrText start, start_key;
-	sPtrText info, info_key;
-	sPtrText player1_up, player1_down;
-	sPtrText player2_up, player2_down;
-	sPtrText back, back_key;
+	uPtrText start, start_key;
+	uPtrText info, info_key;
+	uPtrText player1_up, player1_down;
+	uPtrText player2_up, player2_down;
+	uPtrText back, back_key;
+	uPtrText pause, pause_key;
+	uPtrText game, paused;
+	uPtrText unpause, unpause_key;
 
 	void init_startup_strings();
 	void init_info_strings();
+	void init_paused_strings();
 public:
 	Menu(GameWindow* gw);
 	~Menu() = default;
@@ -54,8 +58,9 @@ public:
 	Menu(Menu&&) = delete;
 	Menu& operator=(const Menu&) = delete;
 	Menu& operator=(Menu&&) = delete;
-	void render_startup();
-	void render_info();
+	void render_startup() const;
+	void render_info() const;
+	void render_pause() const;
 };
 
 

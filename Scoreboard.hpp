@@ -17,31 +17,31 @@
 #include <iostream>
 #include <string>
 #include "GameWindow.hpp"
+#include "Text.hpp"
 
 // TODO: make Scoreboard consistent with Text / Menu
 
 class Scoreboard
 {
 private:
-	int score1, score2;
-	SDL_Rect text1_rect, text2_rect;
-	SDL_Texture* text1_texture;
-	SDL_Texture* text2_texture;
-	GameWindow* game_window;
-	TTF_Font* font;
 	int x1, x2, y1, y2;
-	void update(const int& score, const int& x, const int& y, SDL_Rect* text_rect, SDL_Texture** text_texture);
-	void move_text1();
+	int score1, score2;
+	using uPtrText = std::shared_ptr<class Text>;
+	uPtrText score1_string;
+	uPtrText score2_string;
+	GameWindow* game_window;
+	int font_size;
 public:
 	Scoreboard(GameWindow* gw);
-	~Scoreboard();
+	~Scoreboard() = default;
 	Scoreboard(const Scoreboard&) = delete;
 	Scoreboard(Scoreboard&&) = delete;
 	Scoreboard& operator=(const Scoreboard&) = delete;
 	Scoreboard& operator=(Scoreboard&&) = delete;
+	void reset();
 	void update1();
 	void update2();
-	void render();
+	void render() const;
 	int& operator[](const int& index);
 };
 

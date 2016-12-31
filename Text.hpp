@@ -35,7 +35,7 @@ public:
 	Text(Text&&) = delete;
 	Text& operator=(const Text&) = delete;
 	Text& operator=(Text&&) = delete;
-	void render();
+	void render() const;
 private:
 	void move_left_side_text();
 	void init();
