@@ -16,6 +16,7 @@
 #include <chrono>
 #include <memory>
 #include <random>
+#include "Error.hpp"
 #include "Racket.hpp"
 #include "Ball.hpp"
 #include "Scoreboard.hpp"

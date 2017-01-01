@@ -7,10 +7,7 @@ Text::Text(GameWindow* gw, const std::string& text, const int& x, const int& y, 
 	  font(TTF_OpenFont("font.ttf", font_size))
 {
 	if (font == nullptr)
-	{
-		std::cerr << "Font not found." << std::endl;
-		exit(EXIT_FAILURE); // TODO: Throw exception
-	}
+		throw Error("Font not found.");
 
 	init();
 }
@@ -45,6 +42,9 @@ void Text::init()
 
 	surface = TTF_RenderText_Solid(font, text.c_str(), textColor);
 	texture = SDL_CreateTextureFromSurface(game_window->renderer, surface);
+
+	if (texture == nullptr)
+		throw Error("Creating a texture from an existing surface failed. " + std::string(SDL_GetError()));
 
 	rect.x = x;
 	rect.y = y;

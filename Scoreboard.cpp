@@ -3,11 +3,11 @@
 Scoreboard::Scoreboard(GameWindow* gw)
 	: game_window(gw),
 	  score1(0), score2(0),
-	x1(gw->width / 2 - gw->width / 10),
-	x2(gw->width / 2 + gw->width / 10),
-	y1(gw->height / 15),
-	y2(gw->height / 15),
-	font_size(gw->height/8)
+	  x1(gw->width / 2 - gw->width / 10),
+	  x2(gw->width / 2 + gw->width / 10),
+	  y1(gw->height / 15),
+	  y2(gw->height / 15),
+	  font_size(gw->height / 8)
 {
 	update1();
 	update2();
@@ -42,5 +42,5 @@ int& Scoreboard::operator[](const int& index)
 	else if (index == 1)
 		return score2;
 	else
-		throw std::exception("Wrong index");
+		throw Error("Wrong index called in Scoreboard operator[]");	// std::range_error
 }

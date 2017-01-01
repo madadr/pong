@@ -13,7 +13,7 @@ GameWindow::GameWindow(const int& window_width, const int& window_height, const 
 	  menu(nullptr),
 	  game_running(false),
 	  speed(1),
-MAX_SCORE(max_score)
+	  MAX_SCORE(max_score)
 {
 	init();
 
@@ -38,44 +38,30 @@ void GameWindow::init()
 {
 	//Initialize SDL
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
-	{
-		std::cerr << "Cannot init SDL renderer. " << std::endl;
-		exit(EXIT_FAILURE); // TODO: Throw exception
-	}
+		throw Error("Cannot init SDL renderer. ");
+
 	//Set texture filtering to linear
-	if (!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1"))
-		std::cerr << "Warning: Linear texture filtering not enabled!" << std::endl;
+	if (!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1")) // just warning, no exception
+		throw Error("Warning: Linear texture filtering not enabled");
 
 	//Create window
 	window = SDL_CreateWindow("Pong", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN);
 	if (window == nullptr)
-	{
-		std::cerr << "Cannot create SDL window. " << SDL_GetError() << std::endl;
-		exit(EXIT_FAILURE); // TODO: Throw exception
-	}
+		throw Error("Cannot create SDL window. " + static_cast<std::string>(SDL_GetError()));
 
 	//Create renderer for window
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
 	if (renderer == nullptr)
-	{
-		std::cerr << "Cannot init SDL renderer. " << std::endl;
-		exit(EXIT_FAILURE); // TODO: Throw exception
-	}
+		throw Error("Cannot init SDL renderer.");
 
 	// load icon surface 
 	SDL_Surface* icon = SDL_LoadBMP("pong.ico");
 	if (icon == nullptr)
-	{
-		std::cerr << "Cannot load icon file. " << std::endl;
-		exit(EXIT_FAILURE); // TODO: Throw exception
-	}
+		throw Error("Cannot load icon file.");
 
 	// init TTF
 	if (TTF_Init() == -1)
-	{
-		std::cerr << "Cannot init TTF renderer. " << TTF_GetError() << std::endl;
-		exit(EXIT_FAILURE); // TODO: Throw exception
-	}
+		throw Error("Cannot init TTF renderer. " + static_cast<std::string>(TTF_GetError()));
 
 	// set window icon
 	SDL_SetWindowIcon(window, icon);
@@ -108,7 +94,7 @@ void GameWindow::play()
 		ball->change_position();
 		render_objects();
 		detect_game_end();
-//		delay(speed);
+		//		delay(speed);
 	}
 }
 
@@ -120,7 +106,7 @@ void GameWindow::render_objects()
 
 	// render playground
 	render_background();
-	
+
 	// Render objects
 	ball->render();
 	racket1->render();
@@ -140,7 +126,7 @@ void GameWindow::event_handler()
 	if (SDL_PollEvent(&event) != 0 && event.type == SDL_QUIT)
 		game_running = false;
 
-	if(event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_p)
+	if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_p)
 		pause_handler();
 
 	racket1->control(key_state);

@@ -16,6 +16,7 @@
 
 #include <iostream>
 #include <string>
+#include "Error.hpp"
 #include "GameWindow.hpp"
 #include "Text.hpp"
 

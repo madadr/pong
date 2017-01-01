@@ -17,6 +17,7 @@
 #include <iostream>
 #include <string>
 #include "GameWindow.hpp"
+#include "Error.hpp"
 
 class Text
 {
