@@ -7,7 +7,7 @@ int main(int argc, char** argv)
 	std::streambuf* logbuf = log.rdbuf();
 	std::cerr.rdbuf(logbuf);
 
-	GameWindow game(600, 400, 15);
+	GameWindow game(1200, 600, 15);
 	game.play();
 
 	std::cerr.rdbuf(nullptr);

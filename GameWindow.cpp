@@ -12,7 +12,7 @@ GameWindow::GameWindow(const int& window_width, const int& window_height, const 
 	  scoreboard(nullptr),
 	  menu(nullptr),
 	  game_running(false),
-	  speed(5),
+	  speed(1),
 MAX_SCORE(max_score)
 {
 	init();
@@ -108,7 +108,7 @@ void GameWindow::play()
 		ball->change_position();
 		render_objects();
 		detect_game_end();
-		delay(speed);
+//		delay(speed);
 	}
 }
 

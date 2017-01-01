@@ -23,8 +23,7 @@ class Racket
 	friend class Ball;
 	friend class GameWindow;
 private:
-	SDL_Scancode key_up;
-	SDL_Scancode key_down;
+	SDL_Scancode key_up, key_down;
 	SDL_Rect rect;
 	GameWindow* game_window;
 	int& x;

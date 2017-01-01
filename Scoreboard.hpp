@@ -19,20 +19,17 @@
 #include "GameWindow.hpp"
 #include "Text.hpp"
 
-// TODO: make Scoreboard consistent with Text / Menu
-
 class Scoreboard
 {
 private:
 	int x1, x2, y1, y2;
 	int score1, score2;
 	using uPtrText = std::shared_ptr<class Text>;
-	uPtrText score1_string;
-	uPtrText score2_string;
+	uPtrText score1_string, score2_string;
 	GameWindow* game_window;
 	int font_size;
 public:
-	Scoreboard(GameWindow* gw);
+	explicit Scoreboard(GameWindow* gw);
 	~Scoreboard() = default;
 	Scoreboard(const Scoreboard&) = delete;
 	Scoreboard(Scoreboard&&) = delete;

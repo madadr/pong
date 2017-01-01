@@ -22,14 +22,13 @@ class Text
 {
 private:
 	std::string text;
-	int x;
-	int y;
+	int x, y;
 	SDL_Rect rect;
 	SDL_Texture* texture;
 	TTF_Font* font;
 	GameWindow* game_window;
 public:
-	Text(GameWindow* gw, std::string text, const int& x, const int& y, const int& font_size);
+	Text(GameWindow* gw, const std::string& text, const int& x, const int& y, const int& font_size);
 	~Text();
 	Text(const Text&) = delete;
 	Text(Text&&) = delete;

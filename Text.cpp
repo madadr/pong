@@ -1,7 +1,7 @@
 #include "Text.hpp"
 
 
-Text::Text(GameWindow* gw, std::string text, const int& x, const int& y, const int& font_size)
+Text::Text(GameWindow* gw, const std::string& text, const int& x, const int& y, const int& font_size)
 	: game_window(gw),
 	  text(text), x(x), y(y),
 	  font(TTF_OpenFont("font.ttf", font_size))

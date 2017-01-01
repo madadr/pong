@@ -56,7 +56,7 @@ private:
 	void init_win_strings();
 	void render_win() const;
 public:
-	Menu(GameWindow* gw);
+	explicit Menu(GameWindow* gw);
 	~Menu() = default;
 	Menu(const Menu&) = delete;
 	Menu(Menu&&) = delete;

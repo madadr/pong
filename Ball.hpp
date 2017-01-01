@@ -37,8 +37,6 @@ public:
 	// object control methods
 	void make_move();
 	void change_position();
-	int random_number(const int& number) const;
-	void detect_game_end();
 	void render() const;
 	void reset();
 };

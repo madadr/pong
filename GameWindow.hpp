@@ -41,18 +41,15 @@ private:
 	int speed;
 	SDL_Window* window;
 	SDL_Renderer* renderer;
-	int width;
-	int height;
-	int margin;
+	int width, height, margin;
 	bool game_running;
 	SDL_Event event;
-	std::unique_ptr<Racket> racket1;
-	std::unique_ptr<Racket> racket2;
+	std::unique_ptr<Racket> racket1, racket2;
 	std::unique_ptr<Ball> ball;
 	std::unique_ptr<Scoreboard> scoreboard;
 	std::unique_ptr<Menu> menu;
 public:
-	explicit GameWindow(const int& window_width, const int& window_height, const int& max_score);
+	GameWindow(const int& window_width, const int& window_height, const int& max_score);
 	~GameWindow();
 	GameWindow(const GameWindow&) = delete;
 	GameWindow(GameWindow&&) = delete;

@@ -8,7 +8,7 @@ Racket::Racket(GameWindow* gw, const side& racket_side, const SDL_Scancode& up, 
 	  y(rect.y),
 	  w(rect.w),
 	  h(rect.h),
-	  step(static_cast<int>(gw->speed / 2.5)),
+	  step(gw->height/240),
 	  racket_side(racket_side)
 {
 	reset();
@@ -49,7 +49,7 @@ void Racket::control(const Uint8* key_state)
 void Racket::reset()
 {
 	int racket_w = game_window->width / 25;
-	int racket_h = game_window->height / 5;
+	int racket_h = game_window->height / 4;
 	int racket_x = (racket_side == LEFT) ? game_window->margin - 1 : game_window->width - game_window->margin + 1 - racket_w;
 	int racket_y = game_window->height / 2 - racket_h / 2;
 	rect = {std::move(racket_x), std::move(racket_y), std::move(racket_w), std::move(racket_h)};
